@@ -1,4 +1,4 @@
-# 👋 Hello, I'm Mohamed Alaa!
+# 👋 Hello, I'm Mohamed!
 
 Welcome to my GitHub profile! I'm a passionate **Full Stack Data Scientist (Junior)** with a strong background in **machine learning**, **deep learning**, and **data analysis**. My expertise includes developing predictive models, building intuitive front-end interfaces, and working with various datasets to extract valuable insights. 
 
