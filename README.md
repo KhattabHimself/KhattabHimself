@@ -110,4 +110,4 @@ I make models cheaper to run and measure exactly what each optimization costs in
 
 ## Contact
 
-[LinkedIn](https://linkedin.com/in/khattab-himself) · [Email](mailto:khattabhimself@gmail.com)
+[LinkedIn](https://linkedin.com/in/khattabhimself) · [Email](mailto:khattabhimself@gmail.com)
