@@ -1,4 +1,4 @@
-# Hi, I'm Mohamed Khattab
+# Hello Fellow Traveller, I'm Mohamed Khattab
 
 ML engineer focused on inference: making models fast, cheap, and production-ready.
 
@@ -10,7 +10,18 @@ M.Sc. Computer Science at Acadia University (GPA 4.21/4.30), 4 peer-reviewed pap
 
 ## Featured work
 
-### Chest CT cancer classification: end-to-end MLOps pipeline
+### [M.Sc. thesis: GPU-accelerated encrypted CNN inference under RNS-CKKS](https://github.com/KhattabHimself/Channel-Adaptive-Polynomial-Activations-for-Encrypted-CNN-Inference-under-RNS-CKKS) · PMLR 2026
+*Acadia University, CILS Lab, supervised by Dr. Lydia Bouzar-Benlabiod · PyTorch, HEonGPU, OpenFHE, C++/CUDA, Docker, SLURM*
+
+- **GPU pipeline:** built a GPU-accelerated encrypted CNN pipeline with SVD kernel decomposition and integer quantization, verified to a maximum error of 2.25 × 10⁻⁴.
+- **Profiling the budget:** stress-tested ResNet-20 and showed residual shortcuts consume the encryption depth budget linearly, exhausting it exactly where predicted (after 169,741 rotations and 555.7 s).
+- **Knowing what works:** showed, with three independent reasons (two of them proofs), that per-channel activation degrees can't deliver their promised saving, and found what does matter: how each channel's approximation range is set beats polynomial degree at fixed cost.
+- **Solver:** exact dynamic-programming placement solver, matching brute force on 720 of 720 cases.
+- **Engineering:** 45 tests, every result stamped with git commit, timestamp and command, runs blocked on a dirty working tree, CUDA Docker images so the same code runs locally and on the cluster.
+
+*Defence planned for April 2027. Code and results will be released in the [thesis repository](https://github.com/KhattabHimself/Channel-Adaptive-Polynomial-Activations-for-Encrypted-CNN-Inference-under-RNS-CKKS) after the defence.*
+
+### [Chest CT cancer classification: end-to-end MLOps pipeline](https://github.com/KhattabHimself/chest-cancer-classification)
 *TensorFlow, Optuna, MLflow, DVC, FastAPI, Streamlit, Docker Compose, pytest, GitHub Actions, GHCR*
 
 A four-class CT classifier built as a full ML lifecycle, not a notebook.
@@ -26,19 +37,10 @@ A four-class CT classifier built as a full ML lifecycle, not a notebook.
 
 - **Bottleneck:** encrypted mammogram classification (26,602 images) took 34 minutes per image at 5-bit precision.
 - **Quantization:** swept 2 to 6-bit quantization-aware training and measured the accuracy cost of each bit-width. The 3-bit model runs in 74 s, 27.5× faster, at 86.0% vs 89.7% accuracy.
-- **Architecture for the target:** designed a shallow, wide CNN around the cost of encrypted execution. It ran 24× faster than MobileNetV2-Lite and was more accurate (86.0% vs 83.2%). Grayscale input cut latency a further 32.3%.
+- **Architecture for the target:** designed a shallow, wide CNN around the cost of encrypted execution. It ran 24× faster than MobileNetV2-Lite and was more accurate (86.0% vs 83.2%). Greyscale input cut latency a further 32.3%.
 - **Memory profiling:** found that deep and residual graphs exceed 128 GB of RAM at compile time. Graph topology, not parameter count, decides what can run.
 
-### GPU-accelerated encrypted CNN inference · M.Sc. thesis and PMLR 2026
-*PyTorch, HEonGPU, OpenFHE, C++/CUDA, Docker, SLURM*
-
-- **GPU pipeline:** built a GPU-accelerated encrypted CNN pipeline with SVD kernel decomposition and integer quantization, verified to a maximum error of 2.25 × 10⁻⁴.
-- **Profiling the budget:** stress-tested ResNet-20 and showed residual shortcuts consume the encryption depth budget linearly, exhausting it exactly where predicted (after 169,741 rotations and 555.7 s).
-- **Knowing what works:** showed, with three independent reasons (two of them proofs), that per-channel activation degrees can't deliver their promised saving, and found what does matter: how each channel's approximation range is set beats polynomial degree at fixed cost.
-- **Solver:** exact dynamic-programming placement solver, matching brute force on 720 of 720 cases.
-- **Engineering:** 45 tests, every result stamped with git commit, timestamp and command, runs blocked on a dirty working tree, CUDA Docker images so the same code runs locally and on the cluster.
-
-### HE-NAS: searching for fast encrypted models on a remote GPU cluster
+### [HE-NAS: searching for fast encrypted models on a remote GPU cluster](https://github.com/KhattabHimself/HE-NAS)
 *Acadia Institute for Data Analytics, with Dr. Andrew McIntyre · PyTorch, NSGA-II, CKKS, SLURM*
 
 - **Bottleneck:** hand-designed architectures ignore the real cost of encrypted execution.
@@ -48,12 +50,18 @@ A four-class CT classifier built as a full ML lifecycle, not a notebook.
 - **Result:** 10 of 11 evolved models ran correctly under real encryption, best at 85.6% CIFAR-10 accuracy and 93 to 955 ms latency. Statistical testing (Mann-Whitney U, Holm correction, effect sizes) showed a tie with a simpler design at 2.8× the compute, reported as a null result.
 - **Engineering:** consolidated 23 research files into 7 modules behind one CLI. The paper, report and slides are generated directly from result files.
 
-### Private tool-calling for AI agents
+### [Private tool-calling for AI agents](https://github.com/KhattabHimself/fhe-agent-privacy)
 *BFV private information retrieval, CKKS, Python*
 
-- Encrypted drug-interaction checker: 0 bits of query content leaked, 1.9 s end-to-end over 10,000 records, intent-reconstruction attack accuracy cut from 100% to 33%.
-- **Profiling:** traced latency and memory to a 105.6 MB server response and rotation keys taking 96% of a 171 MB context.
+- **Encrypted drug-interaction checker:** the lookup and scoring servers only ever receive ciphertext; 1.9 s end-to-end over 10,000 records, 100/100 correct. In simulation, intent-reconstruction attack accuracy dropped from 100% to 33% (chance is 25%).
+- **Profiling:** found that 93% of the FHE scoring time was re-loading the encryption context, not cryptography (about 50 ms per patient once cached), and traced memory to a 105.6 MB server response and rotation keys taking 96% of a 171 MB context.
 - **Engineering:** 13,000 lines, 119 tests, one-command reproduction.
+
+### [CKKS inference benchmark](https://github.com/KhattabHimself/ckks-inference-benchmark) · MobiSPC 2026
+*TenSEAL, PyTorch*
+
+- **Measured, not assumed:** the usual level count for an encrypted network is about half of what it really consumes, because every linear layer also uses a level (a depth-*d* MLP needs 2*d* + 1).
+- **Silent failure:** even with enough levels, agreement with the plaintext model drifted from 99.9% to 81.0% between depth 2 and depth 6, with no error raised. Encrypted results need a plaintext reference.
 
 ---
 
@@ -67,7 +75,7 @@ I make models cheaper to run and measure exactly what each optimization costs in
 - **Neural architecture search:** multi-objective search over whatever the deployment needs: accuracy, latency, memory, model size, a specific hardware target, or throughput at a required request rate.
 - **Hardware-aware model design:** shaping the architecture around the cost of the execution target.
 - **LLM inference:** KV cache, low-bit weight quantization for LLMs, and batching for serving throughput.
-- **GPU kernels:** writing CUDA kernels from scratch and in Triton (memory coalescing, shared-memory tiling, kernel fusion), benchmarked against the PyTorch equivalent.
+- **GPU kernels:** writing CUDA and Triton kernels (memory coalescing, shared-memory tiling, kernel fusion) and benchmarking each against the PyTorch equivalent (in progress, see below).
 - **Profiling:** finding where latency and memory actually go with NVIDIA Nsight Systems, Nsight Compute and the PyTorch Profiler, and telling compute-bound from memory-bound work before changing anything.
 
 ---
@@ -94,12 +102,12 @@ I make models cheaper to run and measure exactly what each optimization costs in
 ## Publications
 
 1. **M. Khattab**, L. Bouzar-Benlabiod. *Memory-Efficient Quantization-Aware Optimization for FHE-Based Mammogram Classification.* IEEE SysCon, 2026.
-2. **M. Khattab**, A. Eaman. *Benchmarking Fully Homomorphic Encryption for Deep Neural Network Inference: A Systematic Study of CKKS Parameter Trade-offs.* MobiSPC, Procedia Computer Science (Elsevier), 2026.
+2. **M. Khattab**, A. Eaman. *Benchmarking Fully Homomorphic Encryption for Deep Neural Network Inference: A Systematic Study of CKKS Parameter Trade-offs.* MobiSPC, Procedia Computer Science (Elsevier), 2026. [[code]](https://github.com/KhattabHimself/ckks-inference-benchmark)
 3. **M. Khattab**, L. Bouzar-Benlabiod. *Pure Leveled CKKS for CNN Inference: The Finite Limb Depth Bound and ResNet-20 Stress-Test.* Canadian AI Graduate Student Symposium, PMLR vol. 318, 2026.
-4. L. Hassan, **M. Khattab**, K. Mohamed. *Detecting Abnormalities from Chest X-ray Images: Optimized Learning Approach.* ITAF 2024, Springer.
+4. L. Hassan, **M. Khattab**, K. Mohamed. *Detecting Abnormalities from Chest X-ray Images: Optimized Learning Approach.* ITAF 2024, Springer. [[code]](https://github.com/KhattabHimself/NIH-Chest-X-Ray-Classification-)
 
 ---
 
 ## Contact
 
-[LinkedIn](https://linkedin.com/in/mohamed-khattab-ai) · [Email](mailto:muhammedalaa1412@gmail.com)
+[LinkedIn](https://linkedin.com/in/khattab-himself) · [Email](mailto:khattabhimself@gmail.com)
